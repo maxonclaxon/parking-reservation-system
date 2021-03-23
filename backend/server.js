@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const argon = require('argon2') // Passwords hash
-const crypto = require('crypto')
+const jwt = require('jsonwebtoken')
 const app = express()
 const port = 8000
 
@@ -17,7 +17,23 @@ app.get('/',(req,res)=>{
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use('/api/authenticated',function (req, res, next){
+        if(!req.headers.authorization) return res.status(404).json({message: 'Not authenticated'})
+        else{
+            jwt.verify(req.headers.authorization.split([' '])[1], tokenKey, (err, payload)=>{
+                if(err) next()
+                else if(payload){
+                    if (payload.login === 'admin'){
+                        next() 
+                    }
+                }
+            })
+        }
+        return res.status(404).json({message:'Not authenticated'})
+})
 
+
+//Registration and authentication routes -- START
 app.post('/api/register',(req,res)=>{
     //codes: 1 - profile exists, 2 - profile created
     console.log('Register. Body:',req.body);
@@ -49,20 +65,16 @@ app.post('/api/register',(req,res)=>{
 app.post('/api/auth',(req,res)=>{
     //codes: 1 - auth error, 2- authenticated
     console.log('Authentication')
-    if(!req.body) {res.sendStatus(400)}
+    if(!req.body) {console.log('Body error');res.sendStatus(400)}
     else{
+        console.log(req.body.login,' : ', req.body.password)
         db.all("SELECT * FROM Profiles where login=(?)",[req.body.login],(err,rows)=>{
             if(!err){
                 if(rows.length>0){
                     argon.verify(rows[0].password,req.body.password).then(match=>{
                         if(match){
                             console.log('Пароли совпадают')
-                            let head = Buffer.from(JSON.stringify({alg:'HS256', typ:'jwt'})).toString('base64')
-                            let body = Buffer.from(JSON.stringify(req.body)).toString('base64')
-                            let signature = crypto.createHmac('SHA256',tokenKey).update(head+body).digest('base64')
-                            let token = head+'.'+body+'.'+signature
-                            res.status(201).json({login:req.body.login,token: token});
-                            console.log(token)
+                            res.status(201).json({login:req.body.login, token: jwt.sign({login:req.body.login},tokenKey)});
                         }
                         else{
                             console.log('Пароли не совпадают')
@@ -70,13 +82,18 @@ app.post('/api/auth',(req,res)=>{
                         }
                     })
                 }
-                else{res.sendStatus(200).json({code:1})} 
+                else{console.log('Error: ',err);res.status(200).json({code:1})} 
             }
             else {console.log('Auth error: ',err); res.sendStatus(400)}
         })
     }
 })
+//Registration and authentication routes -- END
 
+app.post('/api/authenticated/test', (req,res)=>{
+    console.log('AUTHENTICATED')
+    req.status(200).json({message:'Authenticated'})
+})
 app.listen(port,() =>{
     console.log('Server started ');
 })

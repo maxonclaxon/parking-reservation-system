@@ -1,25 +1,30 @@
 <template>
-  <div v-if="authenticated">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <Main v-if="authenticated"/>
   <Auth v-else/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import Auth from './components/Auth.vue'
+import Main from './components/Main.vue'
+import readCookie from './js/readcookie'
 
 export default {
   name: 'App',
   data(){
     return{
-      authenticated:false,
+      
     }
   },
   components: {
-    HelloWorld,
+    Main,
     Auth
+  },
+  computed:{
+    authenticated: function(){
+      console.log(readCookie('token'));
+      if(readCookie('token')) return true;
+      else return false;
+    }
   }
 }
 </script>
@@ -32,5 +37,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  width: 400px;
+  margin: 0 auto;
+  height: 100%;
 }
 </style>

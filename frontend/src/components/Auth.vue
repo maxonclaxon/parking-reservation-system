@@ -19,12 +19,14 @@
 <script>
 //import {request} from '../js/request'
 import {request} from '../js/request'
+//import {readCookie} from '../js/readcookie'
 export default {
     name: 'Auth',
     data(){
         return{
             login:'admin',
             password:'password',
+            token:'',
             authentication:true,
             profileExists:false,
             loginError:false
@@ -37,12 +39,15 @@ export default {
             response = await request('api/auth','post', {login:this.login, password:this.password})
             if(response.code!=201)this.loginError=true
             if(response.status==201){
-                //
+                let date = new Date(Date.now() + 86400e3);
+                date = date.toUTCString();
+                document.cookie = "token="+response.data.token+"; expires="+date+"; secure";
+                document.cookie = "login="+response.data.login+"; expires="+date+"; secure";
             }
         } catch(e){
             this.loginError=true
         }
-        console.log(response)
+        console.log(response);
     },
     async Registration(){
         var response = await request('api/register','post',{login:this.login,password:this.password})
