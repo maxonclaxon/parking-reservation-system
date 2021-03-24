@@ -1,14 +1,15 @@
-<template>
-  <Main v-if="authenticated"/>
-  <Auth v-else/>
+<template>   
+<div class="main">
+  <Sidebar v-if="authenticatedя"/>
+  <router-view />
+</div>
 </template>
 
 <script>
-import Auth from './components/Auth.vue'
-import Main from './components/Main.vue'
 import readCookie from './js/readcookie'
-
-
+import Sidebar from './components/Sidebar.vue'
+import M from 'materialize-css'
+import inicializeSideBar from './js/inicializeSideBar'
 export default {
   name: 'App',
   data(){
@@ -17,19 +18,33 @@ export default {
     }
   },
   components: {
-    Main,
-    Auth
+    Sidebar,
   },
   computed:{
     authenticated: function(){
       console.log(readCookie('token'));
       if(readCookie('token')) return true;
       else return false;
-    },
+    }},
+  mounted(){
+    if(!readCookie('token')) this.$router.push('/auth')
+    inicializeSideBar(M)
+    
   }
+  //load-grunt-config, module
 }
 </script>
 
-<style lang='scss' scoped>
-
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+  width: 400px;
+  margin: 0 auto;
+  height: 100%;
+}
 </style>

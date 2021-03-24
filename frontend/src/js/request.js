@@ -1,7 +1,7 @@
 import axios from 'axios'
 export async function request(api, method='get', data=null){
     return await axios({
-        url:'http://localhost:8000/'+api,
+        url:'http://192.168.1.40:8000/'+api,
         method:method,
         params:{
             

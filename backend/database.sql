@@ -1,0 +1,76 @@
+CREATE TABLE "Profile" (
+id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+login TEXT,
+password TEXT,
+type INTEGER);
+
+
+CREATE TABLE "Administrator" (
+id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+phone TEXT,
+pass TEXT,
+fio TEXT,
+"Profile_id" INTEGER NOT NULL,CONSTRAINT "Profile-Administrator"
+FOREIGN KEY ("Profile_id")
+REFERENCES "Profile"(id));
+
+
+CREATE TABLE "Owner" (
+id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+pass TEXT,
+license TEXT,
+fio TEXT,
+phone TEXT,
+"Profile_id" INTEGER NOT NULL,CONSTRAINT "Profile-Owner"
+FOREIGN KEY ("Profile_id")
+REFERENCES "Profile"(id));
+
+
+CREATE TABLE "Parking" (
+id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+adress TEXT);
+
+
+CREATE TABLE "Space" (
+id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+floor INTEGER,
+"Parking_id" INTEGER NOT NULL,CONSTRAINT "Parking-Space"
+FOREIGN KEY ("Parking_id")
+REFERENCES "Parking"(id)
+ON DELETE Cascade);
+
+
+CREATE TABLE "Payment" (
+id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+amount INTEGER,
+status INTEGER);
+
+
+CREATE TABLE "Stand" (
+id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+status INTEGER,
+"from" TEXT,
+"to" TEXT,
+"Space_id" INTEGER NOT NULL,
+"Car_id" INTEGER NOT NULL,
+"Payment_id" INTEGER NOT NULL,CONSTRAINT "Space-Stand"
+FOREIGN KEY ("Space_id")
+REFERENCES "Space"(id)
+ON DELETE Cascade
+,CONSTRAINT "Car-Stand"
+FOREIGN KEY ("Car_id")
+REFERENCES "Car"(id)
+ON DELETE na
+,CONSTRAINT "Payment-Stand"
+FOREIGN KEY ("Payment_id")
+REFERENCES "Payment"(id));
+
+
+CREATE TABLE "Car" (
+id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+number TEXT,
+model TEXT,
+"Owner_id" INTEGER NOT NULL,CONSTRAINT "Owner-Car"
+FOREIGN KEY ("Owner_id")
+REFERENCES "Owner"(id)
+ON DELETE Cascade);

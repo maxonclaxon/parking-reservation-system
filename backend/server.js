@@ -38,7 +38,7 @@ app.post('/api/register',(req,res)=>{
     //codes: 1 - profile exists, 2 - profile created
     console.log('Register. Body:',req.body);
     if(!req.body) return res.sendStatus(400);
-    db.all("SELECT * FROM Profiles where login =(?)",[req.body.login],(err,rows)=>{
+    db.all("SELECT * FROM Profile where login =(?)",[req.body.login],(err,rows)=>{
         if(!err){
             if(rows.length>0){
                 res.status(200).json({code:1})
@@ -48,7 +48,7 @@ app.post('/api/register',(req,res)=>{
                 argon.hash(req.body.password).then(hash=>{
                     hashedPassword=hash; 
                     console.log(hashedPassword)
-                    db.run('INSERT INTO Profiles VALUES(?,?)',[req.body.login,hashedPassword], function(err){
+                    db.run('INSERT INTO Profile VALUES(NULL,?,?,?)',[req.body.login,hashedPassword,0], function(err){
                         if(err)console.log('Error while adding profile: ',err)
                         else {
                             console.log('Profile ',req.body.login,':',hashedPassword,' added')
@@ -68,7 +68,7 @@ app.post('/api/auth',(req,res)=>{
     if(!req.body) {console.log('Body error');res.sendStatus(400)}
     else{
         console.log(req.body.login,' : ', req.body.password)
-        db.all("SELECT * FROM Profiles where login=(?)",[req.body.login],(err,rows)=>{
+        db.all("SELECT * FROM Profile where login=(?)",[req.body.login],(err,rows)=>{
             if(!err){
                 if(rows.length>0){
                     argon.verify(rows[0].password,req.body.password).then(match=>{
@@ -94,6 +94,6 @@ app.post('/api/authenticated/test', (req,res)=>{
     console.log('AUTHENTICATED')
     req.status(200).json({message:'Authenticated'})
 })
-app.listen(port,() =>{
+app.listen(port,'192.168.1.40',() =>{
     console.log('Server started ');
 })
