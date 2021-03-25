@@ -12,6 +12,24 @@ export default new createRouter({
         {
             path:'/auth',
             component:()=>import('@/Views/Auth')
+        },
+        {
+            path:'/profile',
+            component:()=>import('@/Views/Profile'),
+            children:[
+                {
+                    path:'information',
+                    component:()=>import('@/Views/Profile_information')
+                },
+                {
+                    path:'cars',
+                    component:()=>import('@/Views/Profile_cars')
+                },
+                {
+                    path:'carreg',
+                    component:()=>import('@/Views/Profile_carreg')
+                }
+            ]
         }
     ]
 })

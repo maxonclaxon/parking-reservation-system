@@ -38,13 +38,14 @@
 //import {request} from '../js/request'
 import {request} from '../js/request'
 import $ from 'jquery'
+
 //import {readCookie} from '../js/readcookie'
 export default {
     name: 'Auth',
     data(){
         return{
-            login:'admin',
-            password:'password',
+            login:'',
+            password:'',
             token:'',
             authentication:true,
             profileExists:false,
@@ -54,9 +55,11 @@ export default {
     },
     methods:{
     async Auth(){
+        
         this.loading=true;
         this.loginError=false;
         var response;
+
         try{
             await request('api/auth','post', {login:this.login, password:this.password}).then((response)=>{
                 if(response.code!=201)this.loginError=true
@@ -65,7 +68,7 @@ export default {
                     date = date.toUTCString();
                     document.cookie = "token="+response.data.token+"; expires="+date+"; secure";
                     document.cookie = "login="+response.data.login+"; expires="+date+"; secure";
-                    this.$router.push('/')
+                    this.$router.push('/profile');
                     this.loading=false;
                 }
             })
@@ -100,6 +103,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+@import "../css/main.scss";
 .main{
     width: 100%;
     height: 500px;
@@ -110,6 +115,14 @@ export default {
         width: 100%;
         margin: 0 auto;
         color: white;
+    }
+    .btn{
+        background-color: $color_sub;
+        margin: 10px;
+    }
+    .input-field{
+        border-bottom: $color_sub;
+        box-shadow: $color_sub;
     }
     
     

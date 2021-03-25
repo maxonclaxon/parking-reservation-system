@@ -1,6 +1,6 @@
 <template>   
 <div class="main">
-  <Sidebar v-if="authenticatedя"/>
+  <Sidebar v-if="authenticated"/>
   <router-view />
 </div>
 </template>
@@ -22,12 +22,12 @@ export default {
   },
   computed:{
     authenticated: function(){
-      console.log(readCookie('token'));
-      if(readCookie('token')) return true;
+      if(readCookie('token')) return true
       else return false;
     }},
   mounted(){
     if(!readCookie('token')) this.$router.push('/auth')
+    else this.$router.push('/profile')
     inicializeSideBar(M)
     
   }
