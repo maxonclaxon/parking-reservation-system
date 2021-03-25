@@ -35,11 +35,9 @@
 </template>
 
 <script>
-//import {request} from '../js/request'
 import {request} from '../js/request'
 import $ from 'jquery'
 
-//import {readCookie} from '../js/readcookie'
 export default {
     name: 'Auth',
     data(){

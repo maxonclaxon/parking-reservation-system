@@ -1,7 +1,7 @@
 <template>
     <div class="profile">
         <div class="imageholder">
-            <div class="badge">U</div>
+            <div class="badge">{{tagname}}</div>
         </div>
         <div class="info">
             <ul class="collection menu">
@@ -16,10 +16,16 @@
 </template>
 
 <script>
+import readCookie from "../js/readcookie"
 export default {
     data(){
         return{
-
+            
+        }
+    },
+    computed:{
+        tagname(){
+            return readCookie('login')
         }
     },
     methods:{

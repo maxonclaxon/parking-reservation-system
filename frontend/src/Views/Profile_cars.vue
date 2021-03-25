@@ -1,7 +1,7 @@
 <template>
   <div class="info">
     <ul class="collapsible">
-      <li v-for="(item,index) in objects" v-bind:key="index" >
+      <li v-for="(item,index) in getProfileCars" v-bind:key="index" >
         <div class="collapsible-header">
           {{ item.number }}
         </div>
@@ -14,38 +14,24 @@
 </template>
 <script>
 import M from 'materialize-css'
+
+import {mapGetters,mapActions} from 'vuex'
 export default {
   data() {
     return {
       objects: {
-        car1: {
-          number: "О320ВМ",
-          from: "15:00",
-          to: "16:00",
-          address: "moskovskaya 153",
-        },
-        car2: {
-          number: "О157ВМ",
-          from: "12:00",
-          to: "14:00",
-          address: "moskovskaya 153",
-        },
-        car3: {
-          number: "V156DF",
-          from: "05:00",
-          to: "23:00",
-          address: "moskovskaya 153",
-        },
+        
       },
       instances:''
     };
   },
-  methods: {
-  },
+  computed: mapGetters(["getProfileCars"]),
+  methods:mapActions(['loadProfileCars']),
   mounted() {
-    
+    this.loadProfileCars();
     var elems = document.querySelectorAll(".collapsible");
     this.instances = M.Collapsible.init(elems);
+
     
   },
 };
