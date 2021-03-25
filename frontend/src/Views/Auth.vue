@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import {request} from '../js/request'
+import {request_post} from '../js/request'
 import $ from 'jquery'
 
 export default {
@@ -59,13 +59,13 @@ export default {
         var response;
 
         try{
-            await request('api/auth','post', {login:this.login, password:this.password}).then((response)=>{
-                if(response.code!=201)this.loginError=true
-                if(response.status==201){
+            await request_post('api/auth', {login:this.login, password:this.password}).then((response)=>{
+                if(response.data.message)this.loginError=true
+                else{
                     let date = new Date(Date.now() + 86400e3);
                     date = date.toUTCString();
-                    document.cookie = "token="+response.data.token+"; expires="+date+"; secure";
-                    document.cookie = "login="+response.data.login+"; expires="+date+"; secure";
+                    document.cookie = "token="+response.data.token+"; expires="+date+"; ";
+                    document.cookie = "login="+response.data.login+"; expires="+date+"; ";
                     this.$router.push('/profile');
                     this.loading=false;
                 }
@@ -82,7 +82,7 @@ export default {
     async Registration(){
         this.profileExists=false;
         this.loading=true
-        var response = await request('api/register','post',{login:this.login,password:this.password})
+        var response = await request_post('api/register',{login:this.login,password:this.password})
         if(response.code==404){console.log('aa')}
         console.log(response)
         if(response.data.code==1)this.profileExists=true

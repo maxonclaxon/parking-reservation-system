@@ -22,7 +22,7 @@ export default {
   },
   computed:{
     authenticated: function(){
-      if(readCookie('token')) return true
+      if(readCookie('token')) {return true}
       else return false;
     }},
   mounted(){

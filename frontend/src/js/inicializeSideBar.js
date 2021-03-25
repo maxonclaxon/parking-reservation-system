@@ -1,7 +1,7 @@
 export default (M)=>{
     var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems);
-    console.log(instances)
+    M.Sidenav.init(elems,{edge:'right'});
+    
             
 
     // Initialize collapsible (uncomment the lines below if you use the dropdown variation)
