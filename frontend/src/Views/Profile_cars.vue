@@ -3,10 +3,27 @@
     <ul class="collapsible">
       <li v-for="(item,index) in getProfileCars" v-bind:key="index" >
         <div class="collapsible-header">
-          {{ item.number }}
+          {{item.model}} - {{ item.number }}
         </div>
         <div class="collapsible-body" >
-          <span>{{item.number}}{{item.from}}-{{item.to}}{{item.address}}</span>
+          <table class="centered">
+            <thead>
+              <tr><td>Машина на стоянке!</td></tr>
+            </thead>
+            <tr>
+              <td>Парковка:</td>
+              <td>Парковка</td>
+            </tr>
+            <tr>
+              <td>Стоянка от:</td>
+              <td>время</td>
+            </tr>
+            <tr>
+              <td>Стоянка до:</td>
+              <td>время</td>
+            </tr>
+          </table>
+          <br><button class="btn">Поставить на стоянку</button>
         </div>
       </li>
     </ul>

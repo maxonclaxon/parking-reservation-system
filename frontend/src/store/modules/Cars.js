@@ -3,7 +3,7 @@ import readCookie from '../../js/readcookie'
 export default{
     actions:{
         async loadProfileCars(context){
-            await request_get('api/authenticated/profile/getProfileCars',
+            return  request_get('api/authenticated/profile/getProfileCars',
             {login:readCookie('login')},
             readCookie('token')).then((response)=>{
                 if(response.status==200){
@@ -18,19 +18,13 @@ export default{
                 login:readCookie('login')}
             console.log('request for car add with object: ')
             console.log(carObject)
-            await request_post('api/authenticated/profile/registerCar',
+            return request_post('api/authenticated/profile/registerCar',
             carObject,
-            readCookie('token')).then((response)=>{
-                if(response.status==200&&response.data.message=="Car added"){
-                    context.dispatch('loadProfileCars');
-                }
-                else{
-                    console.log('CARR ADDING ERROR. STATUS: '+response.status+'\n message: '+response.data.message)
-                }
-            })
+            readCookie('token'))
 
 
         }
+
     },
     mutations:{
         updateCars(state, object){

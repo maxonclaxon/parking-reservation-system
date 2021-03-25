@@ -81,6 +81,7 @@ app.post('/api/auth', (req, res) => {
 })
 
 app.get('/api/authenticated/profile/getProfileCars', (req, res) => {
+    var carObject={}
     if (Object.keys(req.query).length<1) { console.log('Body error'); res.sendStatus(400) }
     else {
         db.all("SELECT * FROM Car WHERE Owner_id = " +
@@ -91,8 +92,9 @@ app.get('/api/authenticated/profile/getProfileCars', (req, res) => {
                     res.status(404).json({ message: 'getProfileCars Error:\n' + err })
                 }
                 else {
-                    if (rows.length > 0) {
-                        res.status(200).json({ cars: rows })
+                    cars=[]
+                    for(item in carObject){
+                        cars.push(item.num)
                     }
                 }
             })
@@ -102,7 +104,6 @@ app.get('/api/authenticated/profile/getProfileCars', (req, res) => {
 })
 
 app.post('/api/authenticated/profile/registerCar',(req,res)=>{
-    let id=''
     if(!req.body.number||!req.body.mark)res.status(404).json({message:'Bad request suka',body:req.body})
     else{
         db.get("SELECT id FROM Owner where Profile_id ="+
