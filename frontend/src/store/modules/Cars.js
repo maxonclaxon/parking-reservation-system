@@ -7,6 +7,8 @@ export default{
             {login:readCookie('login')},
             readCookie('token')).then((response)=>{
                 if(response.status==200){
+                    //console.log('cars loaded');
+                    //console.log(response.data)
                     context.commit('updateCars', response.data.cars);
                 }
             })

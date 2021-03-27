@@ -43,27 +43,26 @@ ON DELETE Cascade);
 CREATE TABLE "Payment" (
 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 amount INTEGER,
-status INTEGER);
+status INTEGER,
+"Stand_id" INTEGER NOT NULL,CONSTRAINT "Stand-Payment"
+FOREIGN KEY ("Stand_id")
+REFERENCES "Parking_stand"(id));
 
 
-CREATE TABLE "Stand" (
+CREATE TABLE "Parking_stand" (
 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 status INTEGER,
-"from" TEXT,
-"to" TEXT,
+time_from TEXT,
+time_to TEXT,
 "Space_id" INTEGER NOT NULL,
-"Car_id" INTEGER NOT NULL,
-"Payment_id" INTEGER NOT NULL,CONSTRAINT "Space-Stand"
+"Car_id" INTEGER NOT NULL,CONSTRAINT "Space-Stand"
 FOREIGN KEY ("Space_id")
 REFERENCES "Space"(id)
 ON DELETE Cascade
 ,CONSTRAINT "Car-Stand"
 FOREIGN KEY ("Car_id")
 REFERENCES "Car"(id)
-ON DELETE na
-,CONSTRAINT "Payment-Stand"
-FOREIGN KEY ("Payment_id")
-REFERENCES "Payment"(id));
+ON DELETE Cascade);
 
 
 CREATE TABLE "Car" (
@@ -74,3 +73,10 @@ model TEXT,
 FOREIGN KEY ("Owner_id")
 REFERENCES "Owner"(id)
 ON DELETE Cascade);
+
+
+
+
+
+
+

@@ -14,7 +14,6 @@ export async function request_post(api, data=null, authorization=null){
     })
 }
 export async function request_get(api, pars=null, authorization=null){
-    
     return await axios({
         url:'http://185.90.227.72:8000/'+api,
         method:'GET',
