@@ -18,8 +18,6 @@ export default{
                 {number:carInfo.num,
                 mark:carInfo.mark,
                 login:readCookie('login')}
-            console.log('request for car add with object: ')
-            console.log(carObject)
             return request_post('api/authenticated/profile/registerCar',
             carObject,
             readCookie('token'))
