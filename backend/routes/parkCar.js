@@ -12,29 +12,40 @@ router.post('/', (req, res) => {
     //select id from Parking_stand where datetime('now','+1 days') not between time_from and time_to; 
     //SQL выбора всех свободных парковочных мест
     //select id from Space where id in (select Space_id from Parking_stand where datetime('now','+5 hours') not between time_from and time_to);
-    if (req.body) { console.log('Body error'); res.sendStatus(404) }
+    if (!req.body) { console.log('Body error'); res.status(404).json({message:'body error'})}
     else {
-        let time_from = req.body.time_from;
-        let time_to = req.body.time_to;
         let spaceID;
-        let car_id = req.body.car_id;
         let days = 0;
-        let hours = 0;
+        let hours = req.body.hours;
+        let car_num = req.body.number;
+        let adress = req.body.adress;
         let seconds = 0;
-        db.get("select id from Space where id in"+ 
-        "(select Space_id from Parking_stand where datetime('now','+? days','+? hours','+?seconds') not between time_from and time_to)",
-        [days, hours, seconds], (err,row)=>{
+        let body = req.body;
+        console.log(days+' '+hours+' '+seconds+' '+adress+' ')
+        console.log({body});
+        db.all("select id from Space where id not in (select Space_id from Parking_stand where datetime('now','+"+days+" days','+"+hours+" hours','+"+seconds+" seconds') not between time_from and time_to) and Parking_id=(select id from Parking where adress=(?))",
+        [adress], (err,rows)=>{
             if(err){
                 console.log('Search place error')
                 res.status(404).json({message:'Search place error', error:err});
             }
             else{
-                spaceID = row.id;
-                db.run('INSERT INTO Parking_stand VALUES(NULL,0,?,?,?,?)',[time_from,time_to,spaceID,car_id],(err)=>{
-                    if(err){
-                        console.log('Parking stand reg error');
-                        res.status(404).json({message:'Parking stand reg error', error:err});
-                    }
+                if(rows.length<1){res.status(200).json({message:'No free places'});return};
+                spaceID = rows[0].id;
+                console.log(spaceID);
+                db.get('select id from Car where number=(?)',[car_num],(err,row_carID)=>{
+                    console.log(row_carID.id);
+                    console.log(hours);
+                    db.run("INSERT INTO Parking_stand VALUES(NULL,0,datetime('now'),datetime('now','+"+hours+" hours'),?,?)",[spaceID,row_carID.id],(err)=>{
+                        if(err){
+                            console.log('Parking stand reg error');
+                            res.status(404).json({message:'Parking stand reg error', error:err});
+                        }
+                        else{
+                            console.log('Car parked');
+                            res.status(200).json({message:'Car parked'});
+                        }
+                    })
                 })
             }
         })

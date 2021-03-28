@@ -17,6 +17,14 @@
               <td>{{ item.adress }}</td>
             </tr>
             <tr>
+              <td>Номер места:</td>
+              <td>{{ item.space_id }}</td>
+            </tr>
+            <tr>
+              <td>этаж:</td>
+              <td>{{ item.floor }}</td>
+            </tr>
+            <tr>
               <td>Стоянка от:</td>
               <td>{{ item.time_from }}</td>
             </tr>
@@ -29,14 +37,14 @@
             <div> <button class="btn" @click="showParkingWin">
               {{objects.parkButtonText}}
             </button></div>
-            <form v-if="objects.parking" class="col s12" @submit.prevent="">
+            <form v-if="objects.parking" class="col s12" @submit.prevent="park(item.number)">
               <div class="input-field col s12">
-                <select>
+                <select v-model="objects.adress">
                   <option value="" disabled selected>Выберите парковку</option>
                   <option
                     v-for="(item, index) in getParkingAdresses"
                     v-bind:key="index"
-                    value="{{item}}"
+                    :value="item"
                   >
                     {{ item }}
                   </option>
@@ -44,11 +52,11 @@
               </div>
               <div class="row">
                 <div class="input-field col s6">
-                  <input type="text" class="validate" />
+                  <input type="text" class="validate" v-model="objects.hours" />
                   <label for="last_name">Часы</label>
                 </div>
               </div>
-              <input type="submit" value="Поставить на стоянку" class="btn" />
+              <input type="submit" value="Поставить на стоянку" class="btn"  />
             </form>
           </div>
         </div>
@@ -65,6 +73,8 @@ export default {
     return {
       objects: {
         parking: false,
+        adress:'',
+        hours:'',
         parkButtonText:'Поставить на стоянку'
       },
       instances: "",
@@ -72,12 +82,32 @@ export default {
   },
   computed: mapGetters(["getProfileCars", "getParkingAdresses"]),
   methods: {
-    ...mapActions(["loadProfileCars", "loadParkings"]),
+    ...mapActions(["loadProfileCars", "loadParkings","parkCar"]),
     showParkingWin() {
       this.objects.parking=!this.objects.parking;
       if(this.objects.parking)this.objects.parkButtonText="Отмена"
       else this.objects.parkButtonText="Поставить на стоянку"
     },
+    park(number){
+      console.log('aa')
+      console.log(this.objects.adress);
+      let parkInfoObject={};
+      parkInfoObject["number"]=number;
+      parkInfoObject["hours"]=this.objects.hours;
+      parkInfoObject["adress"]=this.objects.adress;
+      this.parkCar(parkInfoObject).then((response)=>{
+        if(response.data.message=="Car parked"){
+          alert('Машина запаркована!');
+          this.objects.hours='';
+          this.objects.adress='';
+          this.loadProfileCars();
+        }
+        else if(response.data.message=="No free places"){
+          alert('На выбранной парковке нет мест');
+        }
+      });
+
+    }
   },
   mounted() {
     this.loadProfileCars();

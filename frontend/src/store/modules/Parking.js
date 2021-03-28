@@ -1,4 +1,4 @@
-import {request_get} from '../../js/request'
+import {request_get, request_post} from '../../js/request'
 import readCookie from '../../js/readcookie'
 export default{
     actions:{
@@ -11,6 +11,11 @@ export default{
                 }
             })
         },
+        async parkCar(context, parkInfoObject){
+            return request_post('api/authenticated/parking/parkCar',
+            parkInfoObject,
+            readCookie('token'))
+        }
 
     },
     mutations:{

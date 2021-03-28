@@ -25,8 +25,14 @@ app.use('/api/authenticated/profile/getProfileCars', getProfileCarsRoute);
 const registerCar = require('./routes/registerCar');
 app.use('/api/authenticated/profile/registerCar', registerCar);
     //get parking adresses
-    const getParkingAdresses = require('./routes/getParkingNames');
-    app.use('/api/authenticated/profile/getParkingAdresses', getParkingAdresses);
+const getParkingAdresses = require('./routes/getParkingNames');
+app.use('/api/authenticated/profile/getParkingAdresses', getParkingAdresses);
+    //park car
+const parkCar = require('./routes/parkCar');
+app.use('/api/authenticated/parking/parkCar', parkCar);
+
+
+
 app.get('/', (req, res) => {
     res.send('Hello World!');
 })
