@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
         let body = req.body;
         console.log(days+' '+hours+' '+seconds+' '+adress+' ')
         console.log({body});
-        db.all("select id from Space where id not in (select Space_id from Parking_stand where datetime('now','+"+days+" days','+"+hours+" hours','+"+seconds+" seconds') not between time_from and time_to) and Parking_id=(select id from Parking where adress=(?))",
+        db.all("select id from Space where id not in (select Space_id from Parking_stand where datetime('now','+"+days+" days','+"+hours+" hours','+"+seconds+" seconds') between time_from and time_to) and Parking_id=(select id from Parking where adress=(?))",
         [adress], (err,rows)=>{
             if(err){
                 console.log('Search place error')
