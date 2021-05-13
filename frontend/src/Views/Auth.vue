@@ -10,6 +10,12 @@
                 <input type="text" name="" id="password" v-model="password"  required>
                 <label for="login">Пароль</label>
             </div>
+            <p>
+                <label>
+                    <input type="checkbox" v-model="stayAlife">
+                    <span style="color:black; text-align:left">Оставаться в сети</span>
+                </label>
+            </p>
             
             
             <input type="submit" value="Войти" class="btn">
@@ -52,7 +58,6 @@
 
 <script>
 import {request_post} from '../js/request'
-import $ from 'jquery'
 
 export default {
     name: 'Auth',
@@ -67,7 +72,8 @@ export default {
             phone:'',
             authentication:true,
             loginError:false,
-            loading:false
+            loading:false,
+            stayAlife:false
         }
     },
     methods:{
@@ -78,14 +84,14 @@ export default {
         var response;
 
         try{
-            await request_post('api/auth', {login:this.login, password:this.password}).then((response)=>{
+            await request_post('api/auth', {login:this.login, password:this.password, }).then((response)=>{
                 if(response.data.code==1){
                     this.loginError=true;
                     this.loading=false;
                 }
                 else{
                     let date = new Date(Date.now() + 86400e3);
-                    date = date.toUTCString();
+                    date = this.stayAlife? date.toUTCString():0
                     document.cookie = "token="+response.data.token+"; expires="+date+"; ";
                     document.cookie = "login="+response.data.login+"; expires="+date+"; ";
                     this.$router.push('/profile');
@@ -94,10 +100,14 @@ export default {
             })
             
         } catch(e){
-            console.log('ERROR:'+e)
-            $('.main').append(e)
+            if(e=="Error: Network Error"){
+                alert('Сервер недоступен')
+                this.loading=false;
+            }
+            else{
             this.loginError=true
             this.loading=false;
+            }
         }
         console.log(response);
     },

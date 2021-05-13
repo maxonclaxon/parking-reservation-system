@@ -8,9 +8,9 @@ var sqlite3 = require('sqlite3');
 require('dotenv/config');
 
 
+app.use(cors({ origin: '*' }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(cors({ origin: '*' }));
 //routes
     //authentication
 const authRoute = require('./routes/auth');
@@ -30,6 +30,9 @@ app.use('/api/authenticated/profile/getParkingAdresses', getParkingAdresses);
     //park car
 const parkCar = require('./routes/parkCar');
 app.use('/api/authenticated/parking/parkCar', parkCar);
+    //profile info
+const getProfileInfo=require('./routes/getProfileInfo');
+app.use('/api/authenticated/profile/getInfo', getProfileInfo);
 
 
 
