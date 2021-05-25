@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
                             standsCount+=1
                             standsTime+=row.time
                         })
-                        standsTime=standsTime/standsCount
+                        standsTime=Math.floor(standsTime/standsCount)+(60*((standsTime/standsCount)%1)).toFixed(2)*0.01
                         ProfileInfo["stands"]=standsCount
                         ProfileInfo["time"]=standsTime
                         ProfileInfo["cost"]=standsTime*250
