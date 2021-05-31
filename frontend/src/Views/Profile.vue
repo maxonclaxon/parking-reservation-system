@@ -50,7 +50,8 @@ export default {
 @import "../css/main.scss";
 .profile{
     height: 100%;
-    width: 100%;
+    width: 400px;
+    margin: 0 auto;
     .imageholder{
         display: table;
         margin-left: auto;

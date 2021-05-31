@@ -30,6 +30,26 @@ export default new createRouter({
                     component:()=>import('@/Views/Profile_carreg')
                 }
             ]
+        },
+        {
+            path:'/admin',
+            name:'Admin',
+            component:()=>import('@/Views/Admin'),
+            children:[
+                {
+                    path:'parkings',
+                    component:()=>import('@/Views/Admin_parkings')
+                },
+                {
+                    path:'reports',
+                    component:()=>import('@/Views/Admin_reports')
+                },
+                {
+                    path:'users',
+                    component:()=>import('@/Views/Admin_users')
+                },
+
+            ]
         }
     ]
 })

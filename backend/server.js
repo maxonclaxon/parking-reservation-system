@@ -33,7 +33,9 @@ app.use('/api/authenticated/parking/parkCar', parkCar);
     //profile info
 const getProfileInfo=require('./routes/getProfileInfo');
 app.use('/api/authenticated/profile/getInfo', getProfileInfo);
-
+    //add to balance
+const addToBalance=require('./routes/addToBalance');
+app.use('/api/authenticated/profile/addToBalance', addToBalance);
 
 
 app.get('/', (req, res) => {

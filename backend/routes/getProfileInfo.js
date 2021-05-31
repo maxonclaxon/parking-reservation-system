@@ -10,13 +10,14 @@ var db = new sqlite3.Database(process.env.db_name)
 //параметры: Owner.id(id пользователя)
 //Возвращает количество часов стоянки в каждой строке
 let getProfileStandsInfo = "select Cast((julianday(time_to,'utc')-julianday(time_from,'utc'))*24 as INTEGER) as time from Car,Parking_stand where Car.Owner_id=(?) and Parking_stand.time_from BETWEEN datetime('now','-30 days') and datetime('now') group by Parking_stand.id"
-let getOwnerIdSql = "select id from Owner where Profile_id = (select id from Profile where login = (?))";
+let getOwnerIdSql = "select id, Balance from Owner where Profile_id = (select id from Profile where login = (?))";
 router.get('/', (req, res) => {
     var ProfileInfo = {};
     if (Object.keys(req.query).length < 1) { console.log('Body error'); res.sendStatus(400) } else {
         db.get(getOwnerIdSql, [req.query.login], (err, row) => {
             if (err) { res.status(404).json({ message: 'Get profile id error', error: err }); return }
             else {
+                ProfileInfo["balance"]=parseFloat(row.Balance);
                 db.all(getProfileStandsInfo, [row.id], (err, rows) => {
                     if (err) { console.log('getParkedCars error'); res.status(404).json({ message: 'Get parked cars error', error: err }); return }
                     else{

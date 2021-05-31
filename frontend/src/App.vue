@@ -27,7 +27,8 @@ export default {
     }},
   mounted(){
     if(!readCookie('token')) this.$router.push('/auth')
-    else this.$router.push('/profile')
+    else if(readCookie('type')=='0') {this.$router.push('/profile')}
+    else if(readCookie('type')=='1') {this.$router.push('/admin')}
     inicializeSideBar(M)
     
   }
@@ -43,7 +44,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-  width: 400px;
+  /* width: 400px; */
   margin: 0 auto;
   height: 100%;
 }

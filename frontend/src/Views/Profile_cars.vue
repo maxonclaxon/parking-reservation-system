@@ -89,8 +89,6 @@ export default {
       else this.objects.parkButtonText="Поставить на стоянку"
     },
     park(number){
-      console.log('aa')
-      console.log(this.objects.adress);
       let parkInfoObject={};
       parkInfoObject["number"]=number;
       parkInfoObject["hours"]=this.objects.hours;
@@ -104,6 +102,9 @@ export default {
         }
         else if(response.data.message=="No free places"){
           alert('На выбранной парковке нет мест');
+        }
+        else if(response.data.message=="Not enough moeny"){
+          alert('У вас не достаточно средств. Пополните баланс!')
         }
       });
 

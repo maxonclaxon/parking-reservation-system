@@ -94,7 +94,13 @@ export default {
                     date = this.stayAlife? date.toUTCString():0
                     document.cookie = "token="+response.data.token+"; expires="+date+"; ";
                     document.cookie = "login="+response.data.login+"; expires="+date+"; ";
-                    this.$router.push('/profile');
+                    document.cookie = "type="+response.data.type+"; expires="+date+"; ";
+                    if(response.data.type=="0"){
+                        this.$router.push('/profile');
+                    }
+                    else{
+                        this.$router.push('/admin')
+                    }
                     this.loading=false;
                 }
             })

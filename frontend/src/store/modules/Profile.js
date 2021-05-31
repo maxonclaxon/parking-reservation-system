@@ -1,4 +1,4 @@
-import {request_get} from '../../js/request'
+import {request_get, request_post} from '../../js/request'
 import readCookie from '../../js/readcookie'
 export default{
     actions:{
@@ -13,6 +13,12 @@ export default{
                 }
             })
         },
+        async addToBalance(context, amount){
+            return request_post('api/authenticated/profile/addToBalance',
+            {login:readCookie('login'), amount:amount}, readCookie('token')).then((response)=>{
+                return response
+            })
+        }
 
     },
     mutations:{

@@ -15,7 +15,7 @@ router.post('/', (req, res) => {
                 if (rows.length > 0) {
                     argon.verify(rows[0].password, req.body.password).then(match => {
                         if (match) {
-                            res.status(200).json({ login: req.body.login, token: jwt.sign({ login: req.body.login }, process.env.tokenKey) });
+                            res.status(200).json({ login: req.body.login, type:rows[0].type ,token: jwt.sign({ login: req.body.login }, process.env.tokenKey) });
                         }
                         else {
                             res.status(200).json({ message: 'Ошибка входа' });
