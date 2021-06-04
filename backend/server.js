@@ -36,6 +36,15 @@ app.use('/api/authenticated/profile/getInfo', getProfileInfo);
     //add to balance
 const addToBalance=require('./routes/addToBalance');
 app.use('/api/authenticated/profile/addToBalance', addToBalance);
+    //admin_search_user
+const searchUser = require('./routes/searchUser')
+app.use('/api/admin/searchUser', searchUser)
+    //get_parkings
+const getParkings = require('./routes/getParkings')
+app.use('/api/admin/getParkings', getParkings)
+    //add_parking
+const addParking = require('./routes/addParking')
+app.use('/api/admin/addParking', addParking)
 
 
 app.get('/', (req, res) => {

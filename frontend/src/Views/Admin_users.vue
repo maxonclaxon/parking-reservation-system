@@ -37,13 +37,19 @@
 export default {
     data(){
         return{
-            user:{},
+            user:{
+              login:"",
+              name:"",
+              phone_number:"",
+              car_number:""
+            },
             search_form:true
         }
     },
     methods:{
         search(){
-            console.log('aa')
+            search_object=self.user;
+            console.log('aa');
         }
     }
 }
