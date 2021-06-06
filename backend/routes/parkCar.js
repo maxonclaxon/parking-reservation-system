@@ -38,10 +38,10 @@ router.post('/', (req, res) => {
                             res.status(404).json({ message: 'Search place error', error: err });
                         }
                         else {
-                            if (rows.length < 1) { res.status(200).json({ message: 'No free places' }); return };
+                            if (rows==undefined) { res.status(200).json({ message: 'No free places' }); return };
                             spaceID = rows.id;
                             db.get('select id from Car where number=(?)', [car_num], (err, row_carID) => {
-                                db.run("INSERT INTO Parking_stand VALUES(NULL,0,datetime('now'),datetime('now','+" + hours + " hours'),?,?)", [spaceID, row_carID.id], (err) => {
+                                db.run("INSERT INTO Parking_stand VALUES(NULL,1,datetime('now'),datetime('now','+" + hours + " hours'),?,?)", [spaceID, row_carID.id], (err) => {
                                     if (err) {
                                         console.log('Parking stand reg error');
                                         res.status(404).json({ message: 'Parking stand reg error', error: err });

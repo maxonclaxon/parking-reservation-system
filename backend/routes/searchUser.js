@@ -23,9 +23,11 @@ router.get('/', (req, res) => {
                 if (row!=undefined) params.push(' Profile.login="'+req.query.login+'"')
                 else console.log('login not found')
                 db.get(verify_name_or_number_sql, [req.query.name, req.query.phone], (err, row) => {
+                    console.log('fio:'+req.query.name+' phone:'+req.query.phone)
                     if (err) { console.log('Get profile by name or number error'); res.status(404).json({ message: 'Get profile by name or number error', error: err }); return }
                     else{
                         if (row!=undefined) params.push(' Owner.fio="'+req.query.name+'" or Owner.phone="'+req.query.phone+'"')
+                        else console.log('fio or phone not found')
                         db.get(verify_car_num_sql,[req.query.car_num], (err,row)=>{
                             if (err) { res.status(404).json({ message: 'Get by car_num error', error: err }); return }
                             else{
@@ -57,7 +59,7 @@ router.get('/', (req, res) => {
                                             license=row.license;
                                             fio=row.fio;
                                             phone=row.phone;
-                                            balance=row.balance;
+                                            balance=row.Balance;
                                             if(!cars.includes(row.number)) cars.push(row.number)
                                             parks.push({
                                                 number:row.number,
@@ -72,6 +74,10 @@ router.get('/', (req, res) => {
                                             profiles,passport,license,fio,phone,balance,cars,parks
                                         }})
                                     })
+                                }
+                                else{
+                                    res.status(200).json({message:'Профиль не найден'})
+                                    return
                                 }
                                 
                             }

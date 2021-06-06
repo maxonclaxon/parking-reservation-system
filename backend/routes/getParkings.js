@@ -9,13 +9,13 @@ var db = new sqlite3.Database(process.env.db_name)
 //Получение инфы о всех стоянках пользователя
 //параметры: Owner.id(id пользователя)
 //Возвращает количество часов стоянки в каждой строке
-let getParkings_sql = "select * from Parking"
+let getParkings_sql = "select Parking.id, Parking.adress, count(Space.id) as spaces from Parking left join Space on Space.Parking_id=Parking.id group by Parking.id"
 router.get('/', (req, res) => {
     var parkings = {};
     if (1==0) { console.log('Body error'); res.sendStatus(400) } else {
         db.all(getParkings_sql,[],(err,rows)=>{
             rows.forEach(row => {
-                parkings[row.id]=row.adress;
+                parkings[row.id]={'adress':row.adress, 'spaces':row.spaces};
             });
             res.status(200).json({messge:'OK',parkings});
             return;

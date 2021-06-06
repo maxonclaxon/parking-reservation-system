@@ -2,7 +2,7 @@
   <div>
     <nav class="block">
       <div class="nav-wrapper teal">
-        <div class="logo left"><a href="#" class="brand-logo left">Logo</a></div>
+        <div class="logo left"><a href="#" class="brand-logo left">Админ-панель</a></div>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
           <li><a @click="tousers()">Пользователи</a></li>
           <li><a @click="toparkings()">Паркинги</a></li>
@@ -55,6 +55,9 @@ nav{
     li{
         margin: 0 20px;
     }
+}
+.brand-logo{
+  margin-left: 30px;
 }
 
 </style>

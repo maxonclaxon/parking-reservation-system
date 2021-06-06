@@ -150,8 +150,9 @@ export default {
 
 @import "../css/main.scss";
 .main{
-    width: 100%;
-    height: 500px;
+    height: 100%;
+    width: 400px;
+    margin: 0 auto;
     img{
         margin: 25% auto;
     }
@@ -161,7 +162,6 @@ export default {
         color: white;
     }
     .btn{
-        background-color: $color_sub;
         margin: 10px;
     }
     .input-field{

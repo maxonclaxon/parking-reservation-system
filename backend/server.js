@@ -45,7 +45,12 @@ app.use('/api/admin/getParkings', getParkings)
     //add_parking
 const addParking = require('./routes/addParking')
 app.use('/api/admin/addParking', addParking)
-
+    //report
+const make_report = require('./routes/make_report')
+app.use('/api/admin/makeReport', make_report);
+    // add parking place
+const addParkingPlace = require('./routes/addParkingPlace')
+app.use('/api/admin/addParkingPlace', addParkingPlace)
 
 app.get('/', (req, res) => {
     res.send('Hello World!');

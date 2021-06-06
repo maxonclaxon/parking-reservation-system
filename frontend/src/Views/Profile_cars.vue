@@ -9,7 +9,8 @@
           <table v-if="item.parked == true" class="centered">
             <thead>
               <tr>
-                <td>Машина на стоянке!</td>
+                <td v-if="new Date() - new Date(new Date(new Date(item.time_from).setMinutes(new Date(item.time_from).getMinutes()+15)).setHours(new Date(new Date(item.time_from).setMinutes(new Date(item.time_from).getMinutes()+15)).getHours()+3)) <0">Место зарезервировано</td>
+                <td v-else>Машина на парковке</td>
               </tr>
             </thead>
             <tr>
