@@ -6,7 +6,7 @@
          {{item.adress}}
         </div>
         <div class="collapsible-body">
-            Свободных мест: {{item.spaces}} 
+            Мест: {{item.spaces}} 
             <div style="margin-top:20px" v-if="!placeAdding" @click="placeAdding=!placeAdding"> 
                     <button class="btn" >
                 Добавить новое место

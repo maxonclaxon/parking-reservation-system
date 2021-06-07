@@ -51,6 +51,9 @@ app.use('/api/admin/makeReport', make_report);
     // add parking place
 const addParkingPlace = require('./routes/addParkingPlace')
 app.use('/api/admin/addParkingPlace', addParkingPlace)
+    //get_parking_place_in_last_min
+const getParkingInLastMin = require('./routes/getParkingInLastMin')
+app.use('/api/admin/getParkingInLastMin', getParkingInLastMin )
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
