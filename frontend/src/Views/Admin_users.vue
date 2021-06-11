@@ -53,7 +53,10 @@
                       <p>С : {{park.time_from}} <br>
                          ПО: {{park.time_to}}
                        </p>
-                       <span class="status">Статус: {{park.status==0? 'Завершена':'В процессе'}}</span>
+                       <span class="status" v-if="park.status==1">Место зарезервировано</span>
+                       <span class="status" v-if="park.status==0">Место зарезервировано</span>
+                       <span class="status" v-if="park.status==3">Машина на парковке</span>
+                       
                       <!-- <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a> -->
                   </li>
               </ul>
