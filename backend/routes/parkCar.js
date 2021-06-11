@@ -31,7 +31,7 @@ router.post('/', (req, res) => {
             }
             else {
                 console.log(adress)
-                db.get("select id from Space where id not in (select Space_id from Parking_stand where datetime('now') between time_from and time_to or datetime('now','+" + days + " days','+" + hours + " hours','+" + seconds + " seconds') between time_from and time_to) and Parking_id=(select id from Parking where adress=(?))",
+                db.get("select id from Space where id not in (select Space_id from Parking_stand where datetime('now') between time_from and time_to or datetime('now','+" + days + " days','+" + hours + " hours','+" + seconds + " seconds') between time_from and time_to) and Parking_id=(select id from Parking where adress=(?)) order by random()",
                     [adress], (err, rows) => {
                         if (err) {
                             console.log('Search place error')
@@ -39,7 +39,7 @@ router.post('/', (req, res) => {
                         }
                         else {
                             if (rows==undefined) { res.status(200).json({ message: 'No free places' }); return };
-                            spaceID = rows.id;
+                            spaceID = rows.id+2;
                             db.get('select id from Car where number=(?)', [car_num], (err, row_carID) => {
                                 db.run("INSERT INTO Parking_stand VALUES(NULL,0,datetime('now'),datetime('now','+" + hours + " hours'),?,?)", [spaceID, row_carID.id], (err) => {
                                     if (err) {

@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
                         return;
                     }
                     else{
-                        res.status(200).json({message:'OK',space_id:space_id});
+                        res.status(200).json({message:'OK',space_id:space_id, stand_id:stand_id});
                     }
                 })
                 return;

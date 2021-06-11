@@ -9,7 +9,7 @@
           <table v-if="item.parked == true" class="centered">
             <thead>
               <tr>
-                <td v-if="new Date() - new Date(new Date(new Date(item.time_from).setMinutes(new Date(item.time_from).getMinutes()+15)).setHours(new Date(new Date(item.time_from).setMinutes(new Date(item.time_from).getMinutes()+15)).getHours()+3)) <0">Место зарезервировано</td>
+                <td v-if="item.status==1">Место зарезервировано</td>
                 <td v-else>Машина на парковке</td>
               </tr>
             </thead>
@@ -109,6 +109,10 @@ export default {
         }
       });
 
+    },
+    updatePage(){
+        this.loadProfileCars();
+        this.loadParkings();
     }
   },
   mounted() {
@@ -118,6 +122,9 @@ export default {
     this.instances = M.Collapsible.init(elems);
     var elems_dropdown = document.querySelectorAll("select");
     M.FormSelect.init(elems_dropdown);
+    setInterval(() => {
+      this.updatePage();
+    }, 2000);
   },
   updated(){
       var elems_dropdown = document.querySelectorAll("select");

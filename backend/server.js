@@ -54,7 +54,9 @@ app.use('/api/admin/addParkingPlace', addParkingPlace)
     //get_parking_place_in_last_min
 const getParkingInLastMin = require('./routes/getParkingInLastMin')
 app.use('/api/admin/getParkingInLastMin', getParkingInLastMin )
-
+    //change_parking_status
+const changeStatus = require('./routes/changeStatus')
+app.use('/api/admin/changeStatus', changeStatus)
 app.get('/', (req, res) => {
     res.send('Hello World!');
 })
